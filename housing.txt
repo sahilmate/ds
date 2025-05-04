@@ -1,0 +1,49 @@
+import pandas as pd
+import numpy as np
+from sklearn import linear_model
+from sklearn.model_selection import train_test_split
+
+df=pd.read_csv("boston_housing.csv")
+
+df.shape #dimensions of dataset
+
+df.describe() #stats like mean, min, max, etc
+
+df.head() #dataset features and attribute information
+
+df_x = df.drop(columns=["price"])
+df_y = df["price"]
+
+#Initialize the linear regression model
+reg = linear_model.LinearRegression()
+
+#Split the data into 67% and 33% testing data
+#We split the dependent variables (x) and the target or independent variable (y)
+x_train, x_test, y_train, y_test = train_test_split(df_x, df_y, test_size = 0.33, random_state=42)
+# random state ensures that the split is reproducible, meaning that the same split will be obtained every time the code is run with this seed value. Just a convention to use no. 42
+
+#Train our model with the training data 
+reg.fit(x_train, y_train)
+
+#Print the coefficients/ weights for each feature/column of our model 
+print(reg.coef_) #weights for each feature
+#A higher absolute value of a coefficient indicates a stronger influence of that feature on the target variable. Positive coefficients suggest a direct relationship, where an increase in the feature value leads to an increase in the target variable, while negative coefficients indicate an inverse relationship.
+
+#print our price predicitions on our test data 
+y_pred = reg.predict(x_test)
+print(y_pred)
+
+#print the predicted price and actual price of houses from the testing data set row 0
+print(y_pred[0])
+
+
+print(y_test[0])
+
+#Model is pretty good, but to check model's performance and accuracy, we will use mean squared error (MSE)
+print(np.mean((y_pred-y_test)**2))
+
+
+#It measures the average of the squares of the errors, which are the differences between the predicted values (y_pred) and the actual values (y_test).
+#By squaring these residuals, we ensure that all error values are positive and that larger errors have a disproportionately higher impact on the final metric.
+
+#Lower values of MSE indicate better model performance. However, it is important to compare the MSE to the range of the target variable.

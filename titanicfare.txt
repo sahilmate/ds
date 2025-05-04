@@ -1,0 +1,48 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+dataset = sns.load_dataset('titanic')
+
+sns.distplot(dataset['fare'])
+sns.distplot(dataset['fare'], kde=False)
+sns.distplot(dataset['fare'], kde=False, bins=10)
+
+print(dataset.head())
+
+sns.histplot(dataset['fare'], kde=True, bins=20, color='blue')
+plt.title('Distribution of Ticket Fare')
+plt.xlabel('Fare')
+plt.ylabel('Frequency')
+plt.show()
+
+sns.histplot(dataset['fare'], kde=False, bins=20, color='green')
+plt.title('Histogram of Ticket Fare (No KDE)')
+plt.xlabel('Fare')
+plt.ylabel('Frequency')
+plt.show()
+
+sns.jointplot(x='age', y='fare', data=dataset)
+plt.show()
+
+# Jointplot with hexbin style for better visualization of dense areas
+sns.jointplot(x='age', y='fare', data=dataset, kind='hex')
+plt.show()
+
+dataset_cleaned = dataset.dropna()  # Remove rows with missing values
+sns.pairplot(dataset_cleaned, hue='sex')
+plt.show()
+
+sns.rugplot(dataset['fare'])
+plt.title('Rugplot of Ticket Fare')
+plt.xlabel('Fare')
+plt.show()
+
+# Final updated histogram with KDE and more details
+plt.figure(figsize=(10, 6))
+sns.histplot(dataset['fare'], kde=True, bins=30, color='blue')
+plt.title('Distribution of Ticket Fare with KDE')
+plt.xlabel('Fare')
+plt.ylabel('Frequency')
+plt.show()

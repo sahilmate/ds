@@ -1,0 +1,68 @@
+!pip install nltk
+
+import nltk
+import string
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from nltk import word_tokenize, sent_tokenize, pos_tag
+from nltk.corpus import stopwords, wordnet
+from nltk.stem.porter import PorterStemmer
+from nltk.stem import WordNetLemmatizer
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+nltk.download('punkt_tab')
+
+text = "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife."
+text = text.lower()
+print("Original Text:", text)
+
+# Remove punctuation
+text_p = "".join([char for char in text if char not in string.punctuation])
+print("\nText without Punctuation:", text_p)
+
+# Tokenization
+from nltk.tokenize import word_tokenize, sent_tokenize
+
+words = word_tokenize(text_p)
+sentences = sent_tokenize(text_p)
+print("\nWord Tokens:", words)
+print("Sentence Tokens:", sentences)
+
+# Stop Words Removal
+stop_words = set(stopwords.words('english'))
+filtered_words = [word for word in words if word not in stop_words]
+print("\nFiltered Words (Stopwords Removed):", filtered_words)
+
+# Stemming
+porter = PorterStemmer()
+stemmed_words = [porter.stem(word) for word in filtered_words]
+print("\nStemmed Words:", stemmed_words)
+
+# Lemmatization
+lemmatizer = WordNetLemmatizer()
+lemmatized_words = [lemmatizer.lemmatize(word) for word in filtered_words]
+print("\nLemmatized Words:", lemmatized_words)
+
+nltk.download('averaged_perceptron_tagger_eng')
+# POS Tagging
+pos_tags = pos_tag(filtered_words)
+print("\nPOS Tagged Words:", pos_tags)
+
+# TF-IDF Representation
+corpus = [text]  # Single document corpus
+tfidf_vectorizer = TfidfVectorizer(stop_words='english')
+tfidf_matrix = tfidf_vectorizer.fit_transform(corpus)
+
+# Get terms and their corresponding TF-IDF values
+terms = tfidf_vectorizer.get_feature_names_out()
+tfidf_values = tfidf_matrix.toarray()
+
+print("\nTF-IDF Terms:", terms)
+print("TF-IDF Values:\n", tfidf_values)

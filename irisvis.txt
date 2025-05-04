@@ -1,0 +1,57 @@
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("iris.csv")
+print(df.head())
+
+df.info()
+
+print(df.dtypes)
+
+print(np.unique(df["Species"]))
+
+print(df.describe())
+
+plt.figure(figsize=(16, 8))
+plt.subplot(2, 2, 1)
+plt.hist(df["SepalLengthCm"], color='skyblue', edgecolor='black')
+plt.title("Histogram of Sepal Length")
+
+plt.subplot(2, 2, 2)
+plt.hist(df["SepalWidthCm"], color='lightgreen', edgecolor='black')
+plt.title("Histogram of Sepal Width")
+
+plt.subplot(2, 2, 3)
+plt.hist(df["PetalLengthCm"], color='salmon', edgecolor='black')
+plt.title("Histogram of Petal Length")
+
+plt.subplot(2, 2, 4)
+plt.hist(df["PetalWidthCm"], color='plum', edgecolor='black')
+plt.title("Histogram of Petal Width")
+
+data_to_plot = [
+    df["SepalLengthCm"],
+    df["SepalWidthCm"],
+    df["PetalLengthCm"],
+    df["PetalWidthCm"]
+]
+
+sns.set_style("whitegrid")
+fig = plt.figure(figsize=(12, 8))
+ax = fig.add_subplot(111)
+ax.boxplot(data_to_plot, patch_artist=True, labels=["SepalLength", "SepalWidth", "PetalLength", "PetalWidth"])
+ax.set_title("Boxplot of Iris Dataset Features")
+plt.ylabel("Centimeters")
+plt.show()
+
+fig = plt.figure(1, figsize=(12,8))
+ax = fig.add_subplot(111)
+bp = ax.boxplot(data_to_plot)
+
+print("\n--- Inference from Boxplots and Histograms ---")
+print("1. SepalWidthCm shows a few outliers on the higher side.")
+print("2. PetalLengthCm and PetalWidthCm are more concentrated and show clearer separation.")
+print("3. Most features appear normally distributed, except SepalWidthCm which is slightly skewed.")
+print("4. No major outliers in SepalLengthCm, PetalLengthCm, or PetalWidthCm.")

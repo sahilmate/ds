@@ -1,0 +1,80 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from seaborn import load_dataset
+
+data = pd.read_csv("titanic_Dataset.csv")
+tips = load_dataset("tips")
+print("Titanic Dataset Columns:\n", data.columns)
+
+plt.figure(figsize=(6, 4))
+sns.countplot(x='Survived', data=data)
+plt.title("Count of Survival")
+plt.show()
+
+plt.figure(figsize=(6, 6))
+data['Sex'].value_counts().plot(kind="pie", autopct="%.2f%%", startangle=90, shadow=True)
+plt.title("Gender Distribution")
+plt.ylabel("")
+plt.show()
+
+plt.figure(figsize=(6, 4))
+plt.hist(data['Age'].dropna(), bins=5, color='skyblue')
+plt.title("Histogram of Age")
+plt.xlabel("Age")
+plt.ylabel("Frequency")
+plt.show()
+
+plt.figure(figsize=(6, 4))
+sns.distplot(data['Age'].dropna(), kde=True, color='purple')
+plt.title("Distribution of Age with KDE")
+plt.xlabel("Age")
+plt.show()
+
+#Boxplot: Age by Gender and Survived
+plt.figure(figsize=(10, 6))
+sns.boxplot(x='Sex', y='Age', hue='Survived', data=data)
+plt.title("Box Plot of Age by Gender and Survival")
+plt.xlabel("Gender")
+plt.ylabel("Age")
+plt.show()
+
+sns.scatterplot(x=tips["total_bill"], y=tips["tip"])
+
+sns.scatterplot(x=tips["total_bill"], y=tips["tip"], hue=tips["sex"])
+plt.show()
+
+sns.scatterplot(x=tips["total_bill"], y=tips["tip"], hue=tips["sex"],
+                style=tips['smoker'])
+plt.show()
+
+sns.barplot(x=data['Pclass'], y=data['Age'])
+plt.show()
+
+sns.barplot(x=data['Pclass'], y=data['Fare'], hue=data["Sex"])
+plt.show()
+
+sns.boxplot(x=data['Sex'], y=data["Age"])
+
+sns.boxplot(x=data['Sex'], y=data["Age"], hue=data["Survived"])
+plt.show()
+
+sns.distplot(data[data['Survived'] == 0]['Age'], hist=False, color="blue")
+sns.distplot(data[data['Survived'] == 1]['Age'], hist=False, color="orange")
+plt.show()
+
+pd.crosstab(data['Pclass'], data['Survived'])
+
+sns.heatmap(pd.crosstab(data['Pclass'], data['Survived']))
+
+sns.clustermap(pd.crosstab(data['Parch'], data['Survived']))
+plt.show()
+
+print("""
+Observations:
+- Female passengers generally had a higher survival rate.
+- Median age of survivors is lower than non-survivors across both genders.
+- Younger passengers, especially females, were more likely to survive.
+- The age distribution is wider for males than for females.
+""")

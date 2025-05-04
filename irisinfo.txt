@@ -1,0 +1,23 @@
+import pandas as pd
+data = pd.read_csv("Iris.csv")
+print('Iris-setosa')
+setosa = data['Species'] == 'Iris-setosa'
+print(data[setosa].describe())
+
+grouped_stats = data.groupby('Species').agg(['mean', 'median', 'min', 'max', 'std'])
+
+print("Summary statistics grouped by Species:\n")
+print(grouped_stats)
+
+# Create a dictionary with one numeric value for each categorical group
+mean_sepal_length = data.groupby('Species')['SepalLengthCm'].mean().to_dict()
+print("\nMean SepalLengthCm for each species:", mean_sepal_length)
+
+
+print('\nIris-versicolor')
+setosa = data['Species'] == 'Iris-versicolor'
+print(data[setosa].describe())
+
+print('\nIris-virginica')
+setosa = data['Species'] == 'Iris-virginica'
+print(data[setosa].describe())

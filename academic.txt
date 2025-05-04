@@ -1,0 +1,64 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv('academic_data.csv')
+
+df
+
+missing_values_formats = ['N.A', '?', 'na', 'N/A', 'NA', '--', 'N/a']
+df = pd.read_csv('academic_data.csv', na_values=missing_values_formats)
+
+df['SPOS'].head(10)
+
+df['SPOS'].isnull().head(10)
+
+df['SPOS'].notnull().head(10)
+
+null_filter = df['SPOS'].notnull()
+df[null_filter]
+
+df.isnull().values.any()
+
+df = pd.read_csv('academic_data.csv')
+
+df
+
+new_df = df.dropna(axis = 1, how = 'any')
+
+new_df
+
+df['SPOS'].fillna(0, inplace = True)
+
+df
+
+df['WT'].fillna(method = 'pad', inplace = True)
+
+df
+
+df['DSBDA'].fillna(method = 'bfill', inplace = True)
+
+df
+
+plt.boxplot(x = df['SPOS'])
+
+df
+
+plt.figure(figsize=(6, 3))
+sns.histplot(df['SPOS'], kde=True)
+plt.title('Histogram before transformation')
+plt.show()
+
+print("Skewness before transformation:", df['SPOS'].skew())
+
+df['SPOS_log'] = np.log1p(df['SPOS'])
+
+plt.figure(figsize=(6, 3))
+sns.histplot(df['SPOS_log'], kde=True)
+plt.title('Histogram after transformation')
+plt.show()
+
+print("Skewness after transformation:", df['SPOS_log'].skew())
+
+df.head()
